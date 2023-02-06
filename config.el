@@ -73,6 +73,7 @@
 (setq erc-fill-column 100
       erc-fill-function 'erc-fill-static
       erc-fill-static-center 20
+      erc-hide-list '("JOIN" "PART" "QUIT")
       erc-prompt (lambda () (concat "[" (buffer-name) "]")))
 
 (map! :leader
@@ -86,3 +87,17 @@
 (custom-set-variables
  '(elcord-editor-icon "emacs_material_icon")
  '(elcord-mode t nil (elcord)))
+
+(use-package! nov
+  :mode ("\\.epub\\'" . nov-mode)
+  :config
+  (setq nov-save-place-file (concat doom-cache-dir "nov-places")))
+
+;; accept completion from copilot and fallback to company
+(use-package! copilot
+  :hook (prog-mode . copilot-mode)
+  :bind (("C-TAB" . 'copilot-accept-completion-by-word)
+         ("C-<tab>" . 'copilot-accept-completion-by-word)
+         :map copilot-completion-map
+         ("<tab>" . 'copilot-accept-completion)
+         ("TAB" . 'copilot-accept-completion)))

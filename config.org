@@ -1,7 +1,9 @@
 #+title: Config
 #+author: Geraldo Hendriks
+#+startup: overview
 
 * Table of contents :toc:
+ :all:
 - [[#identity-setup][Identity setup]]
 - [[#doom-dashboard][Doom-Dashboard]]
 - [[#theming][Theming]]
@@ -19,6 +21,8 @@
   - [[#layout][Layout]]
 - [[#line-settings][Line Settings]]
 - [[#elcord][Elcord]]
+- [[#novel][Nov.el]]
+- [[#copilot][Copilot]]
 
 * Identity setup
 Some functionality uses this to identify you, e.g. GPG configuration, email
@@ -178,6 +182,7 @@ Dired is the file manager within Emacs.  Below, I setup keybindings.
 (setq erc-fill-column 100
       erc-fill-function 'erc-fill-static
       erc-fill-static-center 20
+      erc-hide-list '("JOIN" "PART" "QUIT")
       erc-prompt (lambda () (concat "[" (buffer-name) "]")))
 #+end_src
 
@@ -206,4 +211,25 @@ I set comment-line to 'SPC TAB TAB' which is a rather comfortable keybinding for
 (custom-set-variables
  '(elcord-editor-icon "emacs_material_icon")
  '(elcord-mode t nil (elcord)))
+#+end_src
+
+* Nov.el
+Nov.el is a epub reader for Emacs
+#+begin_src emacs-lisp
+(use-package! nov
+  :mode ("\\.epub\\'" . nov-mode)
+  :config
+  (setq nov-save-place-file (concat doom-cache-dir "nov-places")))
+#+end_src
+
+* Copilot
+#+begin_src emacs-lisp
+;; accept completion from copilot and fallback to company
+(use-package! copilot
+  :hook (prog-mode . copilot-mode)
+  :bind (("C-TAB" . 'copilot-accept-completion-by-word)
+         ("C-<tab>" . 'copilot-accept-completion-by-word)
+         :map copilot-completion-map
+         ("<tab>" . 'copilot-accept-completion)
+         ("TAB" . 'copilot-accept-completion)))
 #+end_src

@@ -50,3 +50,6 @@
 ;(unpin! t)
 
 (package! elcord)
+(package! nov)
+(package! copilot
+  :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
